@@ -49,10 +49,21 @@ public class TimeSeries {
 		String line = "";
 		String splitBy = ",";
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(csvName));
+			BufferedReader br = new BufferedReader(new FileReader(csvName)); //Reading the csv file
+			int i = 0 ;
 			while ((line = br.readLine()) != null)   //returns a Boolean value
 			{
-				String[] employee = line.split(splitBy);    // use comma as separator
+				String[] headers = line.split(splitBy);    // use comma as separator
+				if (i == 0) {
+					this.cols = new Columns[headers.length]; //number of columns (A,B,C,D)
+					for (int j = 0; j < headers.length; j++) {
+							this.cols[j] = new Columns(headers[j]);
+					}
+					i++;
+				}
+				for (int j = 0; j < headers.length; j++) {
+					cols[j].getFloats().add(Float.parseFloat(headers[j]));
+				}
 			}
 		}
 		catch (IOException e) {
