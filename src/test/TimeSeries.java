@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class TimeSeries {
 
-
+	//new Data-Type which stores column name and an arrayList of the values for each column.
 	public class Columns{
 		private String name;
 		private ArrayList<Float> floats;
@@ -38,13 +38,30 @@ public class TimeSeries {
 
 	}
 
+	//Data-Members
 	private String csvName;
 	private Columns[] cols;
 
+	//TimeSeries Ctor
 	public TimeSeries(String csvFileName) {
-
+		this.csvName = csvFileName;
+		this.readCsv();
 
 	}
+	//returns value by column name and index.
+	public float getValue(String colName, int index){
+		for (int i = 0; i < cols.length; i++) {
+			if(getCols()[i].getName().equals(colName))
+				return getCols()[i].getFloats().get(index);
+		}
+			throw new NullPointerException();
+	}
+
+	//returns all the table
+	public Columns[] getCols() {
+		return cols;
+	}
+
 	public void readCsv(){
 		String line = "";
 		String splitBy = ",";
@@ -53,18 +70,21 @@ public class TimeSeries {
 			int i = 0 ;
 			while ((line = br.readLine()) != null)   //returns a Boolean value
 			{
-				String[] headers = line.split(splitBy);    // use comma as separator
+				String[] values = line.split(splitBy);    // use comma as separator
 				if (i == 0) {
-					this.cols = new Columns[headers.length]; //number of columns (A,B,C,D)
-					for (int j = 0; j < headers.length; j++) {
-							this.cols[j] = new Columns(headers[j]);
+					this.cols = new Columns[values.length]; //number of columns (A,B,C,D)
+					for (int j = 0; j < values.length; j++) {
+							this.cols[j] = new Columns(values[j]);
 					}
 					i++;
 				}
-				for (int j = 0; j < headers.length; j++) {
-					cols[j].getFloats().add(Float.parseFloat(headers[j]));
+				else {
+					for (int j = 0; j < values.length; j++) {
+						cols[j].getFloats().add(Float.parseFloat(values[j]));
+					}
 				}
 			}
+			br.close();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
