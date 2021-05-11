@@ -41,6 +41,26 @@ public class TimeSeries {
 	//Data-Members
 	private String csvName;
 	private Columns[] cols;
+	private int numOfValues;
+	private int numOfFeatures;
+
+	public int getNumOfValues() {
+		if(this.getCols() != null)
+			return this.getCols()[0].getFloats().size();
+		return 0;
+	}
+
+	public void setNumOfValues(int numOfValues) {
+		this.numOfValues = numOfValues;
+	}
+
+	public int getNumOfFeatures(){
+		if(this.getCols() != null)
+			return this.getCols().length;
+		return 0;
+	}
+
+
 
 	//TimeSeries Ctor
 	public TimeSeries(String csvFileName) {
@@ -49,12 +69,12 @@ public class TimeSeries {
 
 	}
 	//returns value by column name and index.
-	public float getValue(String colName, int index){
+	public float getValue(String colName, int index) throws Exception {
 		for (int i = 0; i < cols.length; i++) {
 			if(getCols()[i].getName().equals(colName))
 				return getCols()[i].getFloats().get(index);
 		}
-			throw new NullPointerException();
+			throw new Exception("Column or Index not Found");
 	}
 
 	//returns all the table
