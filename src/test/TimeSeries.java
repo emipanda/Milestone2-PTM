@@ -77,6 +77,18 @@ public class TimeSeries {
 			throw new Exception("Column or Index not Found");
 	}
 
+	public float[] getValuesArr(String colName){
+		float[] valuesArr = new float[getNumOfValues()];
+		ArrayList<Float> valuesAL = new ArrayList<Float>();
+		for (int i = 0; i < cols.length; i++) {
+			if(getCols()[i].getName().equals(colName))
+				valuesAL = getCols()[i].getFloats();
+		}
+		for (int k = 0; k < getNumOfValues(); k++) {
+			valuesArr[k] = valuesAL.get(k);
+		}
+		return  valuesArr;
+	}
 	//returns all the table
 	public Columns[] getCols() {
 		return cols;

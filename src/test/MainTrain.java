@@ -73,7 +73,7 @@ public class MainTrain {
 		//	A-C: y=a1*x+b1
 		//	B-D: y=a2*x+b2
 
-		generateTrainCSV(a1,b1,a2,b2);
+		//generateTrainCSV(a1,b1,a2,b2);
 		TimeSeries ts=new TimeSeries("trainFile1.csv");
 		SimpleAnomalyDetector ad=new SimpleAnomalyDetector();
 		ad.learnNormal(ts);
@@ -89,8 +89,9 @@ public class MainTrain {
 
 		// test the anomaly detector: (60 points)
 		// one simply anomaly is injected to the data
-		int anomaly=5+r.nextInt(90); // one anomaly injected in a random time step
-		generateTestCSV(a1,b1,a2,b2,anomaly);
+		//int anomaly=5+r.nextInt(90); // one anomaly injected in a random time step
+		int anomaly=1;
+		//generateTestCSV(a1,b1,a2,b2,anomaly);
 		TimeSeries ts2=new TimeSeries("testFile1.csv");
 		List<AnomalyReport> reports = ad.detect(ts2);
 

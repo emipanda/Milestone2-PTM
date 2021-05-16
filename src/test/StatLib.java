@@ -41,55 +41,26 @@ public class StatLib {
 	// and +1 represents X and Y are positively correlated.
 	// returns the Pearson correlation coefficient of X and Y
 	public static float pearson(float[] x, float[] y){
-		float sumX = 0, sumY = 0, sum_XY = 0;
-		float squareSum_X = 0, squareSum_Y = 0;
-		int n = x.length;
-		for (int i = 0; i < n; i++)
-		{
-			// sum of elements of array X.
-			sumX += x[i];
+		float covXY = cov(x, y);
+		double rootVarXY = (Math.sqrt(var(x)) * Math.sqrt(var(y)));
 
-			// sum of elements of array Y.
-			sumY += y[i];
-
-			// sum of X[i] * Y[i].
-			sum_XY += x[i] * y[i];
-
-			// sum of square of array elements.
-			squareSum_X += Math.pow(x[i],2);
-			squareSum_Y += Math.pow(y[i],2);
-		}
-
-		// use formula for calculating correlation coefficient.
-		float corr = ((n * sum_XY) - (sumX * sumY))/
-				(float)(Math.sqrt((n * squareSum_X - sumX * sumX) * (n * squareSum_Y - sumY * sumY)));
-		return corr;
-
+		return (float) (covXY / rootVarXY);
 	}
 
 	// performs a linear regression and returns the line equation
 	public static Line linear_reg(Point[] points){
-		float a = 0 ,b = 0;
-		float sumY = 0 , sumX = 0 ,squareSum_X = 0 , sum_XY = 0;
-		int n = points.length;
-		for (int i = 0; i < n; i++) {
-			// sum of elements of array Y.
-			sumY += points[i].y;
+		float a;
+		float b;
+		float[] x = new float[points.length];
+		float[] y = new float[points.length];
 
-			// sum of elements of array X.
-			sumX += points[i].x;
-
-			// sum of X * Y.
-			sum_XY += points[i].x * points[i].y;
-
-			// sum of square of array elements.
-			squareSum_X += Math.pow(points[i].x,2);
+		for (int i = 0; i < points.length; i++) {
+			x[i]=  points[i].x;
+			y[i]=  points[i].y;
 		}
-		a = ((n * sum_XY) - (sumX * sumY)) / ((n * squareSum_X) - (float)Math.pow(sumX , 2));
-		b = ((sumY * squareSum_X) - (sumX * sum_XY)) / ((n * squareSum_X) - (float)Math.pow(sumX , 2));
-
-		Line line  = new Line(a,b);
-		return line;
+		a=cov(x,y)/var(x);
+		b=avg(y)-a*avg(x);
+		return new Line(a,b);
 	}
 
 	//Standard deviation = square root of ∑(Xi - ų)2 / N
